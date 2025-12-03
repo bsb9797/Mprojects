@@ -73,11 +73,8 @@ create table Payment (
         references Bill(BillId) 
         on delete cascade);
         
-insert into Payment (PaymentId, BillId, PaymentDate, AmountPaid) values (101, 1, '2025-11-15', 500);
 insert into Payment (PaymentId, BillId, PaymentDate, AmountPaid) values (102, 2, '2025-10-20', 300);
-insert into Payment (PaymentId, BillId, PaymentDate, AmountPaid) values (103, 3, '2025-09-25', 450);
 insert into Payment (PaymentId, BillId, PaymentDate, AmountPaid) values (104, 4, '2025-08-30', 600);
-insert into Payment (PaymentId, BillId, PaymentDate, AmountPaid) values (105, 5, '2025-11-10', 700);
 select*from Payment;
 
 
@@ -91,7 +88,7 @@ select c.CustomerId,c.Name,SUM(b.AmountDue) AS TotalUnpaidAmount
 from Customer c
 join Meter m on c.CustomerId = m.CustomerId
 join Bill b on m.MeterId = b.MeterId
-where b.Paid = 0
+where b.Paid = 0 
 group by c.CustomerId, c.name
 order by TotalUnpaidAmount desc;
 
@@ -114,5 +111,37 @@ group by m.MeterId, m.LastReadingDate
 order by TotalUsage desc;
 
 
+create database Bhargav;
+use bhargav;
 
-
+create database tax_calculation_db;
+use tax_calculation_db;
+ 
+show databases;
+show tables;
+drop table property_tax;
+drop table total_tax;
+drop table vehicle_tax;
+create table property_tax (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    area_base_price DOUBLE NOT NULL,
+    built_up_area INT NOT NULL,
+    age INT NOT NULL,
+    in_city VARCHAR(50) NOT NULL,
+    pt_tax DOUBLE DEFAULT 0.0
+);
+create table vehicle_tax (
+    registration_number VARCHAR(20) PRIMARY KEY,     
+    brand VARCHAR(100) NOT NULL,
+    max_speed INT NOT NULL, 
+    number_of_seats INT NOT NULL,
+    type_of_vehicle VARCHAR(50) NOT NULL, 
+    purchase_cost DOUBLE NOT NULL,
+    vh_tax DOUBLE DEFAULT 0.0 
+);
+create table total_tax (
+	sl_no INT PRIMARY KEY AUTO_INCREMENT,
+    particular VARCHAR(100) NOT NULL,  
+    quantity  INT NOT NULL,
+    tax DOUBLE NOT NULL
+);
