@@ -1,0 +1,69 @@
+
+CREATE DATABASE pg_db;
+USE pg_db;
+
+drop database pg_db;
+
+
+CREATE TABLE owner (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    mobile VARCHAR(15) NOT NULL,
+    age INT NOT NULL
+);
+ 
+CREATE TABLE tenant (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    mobile VARCHAR(15) NOT NULL,
+    age INT NOT NULL
+);
+ 
+CREATE TABLE admin (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
+ 
+CREATE TABLE pg_place (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    registration_number VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    locality VARCHAR(50) NOT NULL,
+    rent_amount DOUBLE NOT NULL,
+    built_up_area DOUBLE NOT NULL,
+    available BOOLEAN NOT NULL,
+    visitor_count INT DEFAULT 0,
+    owner_id BIGINT,
+ 
+    CONSTRAINT fk_owner
+        FOREIGN KEY (owner_id)
+        REFERENCES owner(id)
+        ON DELETE CASCADE
+);
+ 
+INSERT INTO owner (name, email, mobile, age)
+VALUES
+('Ramesh', 'ramesh@gmail.com', '9876543210', 35),
+('Suresh', 'suresh@gmail.com', '9123456780', 40);
+ 
+INSERT INTO pg_place
+(registration_number, city, locality, rent_amount, built_up_area, available, visitor_count, owner_id)
+VALUES
+('PG1001', 'Bangalore', 'BTM', 7000, 1200, true, 5, 1),
+('PG1002', 'Bangalore', 'HSR', 8000, 1500, false, 10, 1),
+('PG2001', 'Chennai', 'Velachery', 6500, 1000, true, 3, 2);
+ 
+INSERT INTO tenant (name, email, mobile, age)
+VALUES
+('Anil', 'anil@gmail.com', '9000011111', 22),
+('Kiran', 'kiran@gmail.com', '9000022222', 25);
+ 
+SHOW TABLES;
+ 
+SELECT * FROM owner;
+SELECT * FROM pg_place;
+SELECT * FROM tenant;
+ 
